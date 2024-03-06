@@ -26,6 +26,7 @@
     <string name="BotonVolver">VOLVER</string>
     <string name="ID_PERRO">ID_PERRO</string>
     <string name="TituloLista">Lista de Animales Almacenados</string>
+    <string name="admin">Administrador (Sí/No)</string>
     <string name="vacio"></string>
     <string name="verAnimal">+</string>
 
