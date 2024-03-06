@@ -12,12 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.petpetpet.databinding.PestanaRegistroBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 
 class MainActivity3 : AppCompatActivity() {
     private lateinit var binding: PestanaRegistroBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var rutaImagen: String = "" // Inicializa la variable con una cadena vacía
+    private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
+    private var databaseMascotas: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Mascotas")
 
     companion object {
         private const val CODIGO_SELECCION_IMAGEN = 100
@@ -70,9 +75,14 @@ class MainActivity3 : AppCompatActivity() {
                 }
 
                 if (mascota != null) {
-                    db.addMascota(mascota)
-                    val snackbar = Snackbar.make(binding.root, "Operación alta realizada", Snackbar.LENGTH_SHORT)
-                    snackbar.show()
+                    databaseMascotas.child(mascota.id.toString()).setValue(mascota).addOnSuccessListener {
+                        val snackbar = Snackbar.make(binding.root, "Operación alta realizada", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                    }.addOnFailureListener {
+                        val snackbar = Snackbar.make(binding.root, "Error al insertar la mascota", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                    }
+
                 }
 
                 binding.cuadroIdenti.text.clear()
@@ -86,8 +96,38 @@ class MainActivity3 : AppCompatActivity() {
         }
         // Botón de modificación
         binding.botonModifica.setOnClickListener {
-            val db = BaseDatos(this)
 
+            databaseMascotas.child(binding.cuadroIdenti.text.toString()).get().addOnSuccessListener {
+                if (it.exists()) {
+                    val formato = SimpleDateFormat("dd-MM-yyyy")
+                    val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
+                        Mascota(
+                            id = binding.cuadroIdenti.text.toString().toInt(),
+                            nombre = binding.cuadroNombre.text.toString(),
+                            imagen = rutaImagen,
+                            raza = binding.cuadroRaza.text.toString(),
+                            sexo = binding.cuadroSexo.text.toString(),
+                            fechaNacimiento = it,
+                            dni = binding.cuadroDNI.text.toString()
+                        )
+                    }
+                    if (mascota != null) {
+                        databaseMascotas.child(mascota.id.toString()).setValue(mascota).addOnSuccessListener {
+                            val snackbar = Snackbar.make(binding.root, "Operación modificar realizada", Snackbar.LENGTH_SHORT)
+                            snackbar.show()
+                        }.addOnFailureListener {
+                            val snackbar = Snackbar.make(binding.root, "Error al modificar la mascota", Snackbar.LENGTH_SHORT)
+                            snackbar.show()
+                        }
+                    }
+                } else {
+                    val snackbar = Snackbar.make(binding.root, "No hay mascota disponible con ese ID", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+                }
+            }.addOnFailureListener {
+                val snackbar = Snackbar.make(binding.root, "Error al modificar la mascota", Snackbar.LENGTH_SHORT)
+                snackbar.show()
+            }
             // Verifica si alguno de los campos está vacío
             if (binding.cuadroIdenti.text.isEmpty() ||
                 binding.cuadroNombre.text.isEmpty() ||
@@ -98,28 +138,6 @@ class MainActivity3 : AppCompatActivity() {
             ) {
                 // Muestra un Snackbar indicando que se deben completar todos los campos
                 Snackbar.make(binding.root, "Por favor, completa todos los campos", Snackbar.LENGTH_SHORT).show()
-            } else {
-                val formato = SimpleDateFormat("dd-MM-yyyy")
-                val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
-                    Mascota(
-                        id = binding.cuadroIdenti.text.toString().toInt(),
-                        nombre = binding.cuadroNombre.text.toString(),
-                        imagen = rutaImagen,
-                        raza = binding.cuadroRaza.text.toString(),
-                        sexo = binding.cuadroSexo.text.toString(),
-                        fechaNacimiento = it,
-                        dni = binding.cuadroDNI.text.toString()
-                    )
-                }
-
-                if (mascota != null) {
-                    db.updateMascota(mascota)
-                    val snackbar = Snackbar.make(binding.root, "Operación modificar realizada", Snackbar.LENGTH_LONG)
-                    snackbar.show()
-                } else {
-                    val snackbar = Snackbar.make(binding.root, "ERROR al modificar la mascota", Snackbar.LENGTH_LONG)
-                    snackbar.show()
-                }
             }
         }
         // Botón de consulta
@@ -221,7 +239,7 @@ class MainActivity3 : AppCompatActivity() {
                     )
                 }
                 if (mascota != null){
-                    db.addMascota(mascota)
+
                     val snackbar = Snackbar.make(binding.root, "Mascota insertada", Snackbar.LENGTH_SHORT)
                     snackbar.show()
                 }

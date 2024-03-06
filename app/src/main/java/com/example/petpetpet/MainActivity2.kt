@@ -7,10 +7,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.petpetpet.databinding.AltaUsuarioBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity2 : AppCompatActivity() {
     private lateinit var binding: AltaUsuarioBinding
-    private lateinit var dbHelper: BaseDatos // Debes tener una instancia de tu BaseDatos
+
+    private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +22,7 @@ class MainActivity2 : AppCompatActivity() {
         setContentView(binding.root)
 
         // Inicializar el DBHelper
-        dbHelper = BaseDatos(this)
+        //dbHelper = BaseDatos(this)
 
         binding.botonRegistrarUsuario.setOnClickListener{
             // Obtener los valores de los cuadros de texto
@@ -26,26 +30,19 @@ class MainActivity2 : AppCompatActivity() {
             val nombreCompleto = binding.CuadroNombre.text.toString()
             val contrasena = binding.cuadroContra.text.toString()
 
-            // Insertar los datos en la base de datos
-            if (insertarUsuario(nombreUsuario, nombreCompleto, contrasena)) {
-                Snackbar.make(binding.root, "Usuario registrado correctamente", Snackbar.LENGTH_SHORT).show()
-            } else {
-                Snackbar.make(binding.root, "Error al registrar usuario", Snackbar.LENGTH_SHORT).show()
+            // Verificar que los campos no estén vacíos
+            if (nombreUsuario.isEmpty() || nombreCompleto.isEmpty() || contrasena.isEmpty()) {
+                Snackbar.make(it, "Por favor, llene todos los campos", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            // Regresar al MainActivity
+
+            // Insertar el usuario en la base de datos
+            val usuario = Usuario(nombreUsuario, nombreCompleto, contrasena, "usuario", "activo")
+            databaseUsuarios.child(nombreUsuario).setValue(usuario)
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun insertarUsuario(nombreUsuario: String, nombreCompleto: String, contrasena: String): Boolean {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(BaseDatos.COLUMN_USERNAME, nombreUsuario)
-            put(BaseDatos.COLUMN_NAME, nombreCompleto)
-            put(BaseDatos.COLUMN_PASSWORD, contrasena)
-        }
-        val newRowId = db.insert(BaseDatos.TABLE_USUARIO, null, values)
-        return newRowId != -1L
-    }
 }

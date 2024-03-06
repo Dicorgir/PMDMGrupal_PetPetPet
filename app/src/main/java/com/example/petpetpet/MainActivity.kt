@@ -11,18 +11,20 @@ import com.example.petpetpet.MainActivity2
 import com.example.petpetpet.MainActivity3
 import com.example.petpetpet.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var db: BaseDatos // Suponiendo que tienes una clase BaseDatos para manejar la base de datos
     private lateinit var sharedPreferences: SharedPreferences
+    private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = BaseDatos(this) // Inicializar el objeto BaseDatos
+
         sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
         // Verificar si el usuario y la contraseña deben recordarse
@@ -58,18 +60,22 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            if (validarCredenciales(usuarioIngresado, contrasenaIngresada)) {
-                val intent = Intent(this, MainActivity3::class.java)
-                startActivity(intent)
-            } else {
-                Snackbar.make(binding.root, "Usuario o contraseña no son correctos", Snackbar.LENGTH_SHORT).show()
-                // Limpiar los campos de texto
-                binding.CuadroNombre.text?.clear()
-                binding.cuadroContra.text?.clear()
-
-                // Devolver el foco al campo de usuario
-                binding.CuadroNombre.requestFocus()
+            databaseUsuarios.child(usuarioIngresado).child(usuarioIngresado).get().addOnSuccessListener {
+                databaseUsuarios.child(usuarioIngresado).child("contrasena").get().addOnSuccessListener {
+                    val contrasenaReal = it.value.toString()
+                    if (contrasenaReal == contrasenaIngresada) {
+                        val intent = Intent(this, MainActivity3::class.java)
+                        startActivity(intent)
+                    }else {
+                        fallo()
+                    }
+                }.addOnCanceledListener {
+                    fallo()
+                }
+            }.addOnCanceledListener {
+                fallo()
             }
+
         }
         // Botón de registro
         binding.botonDarAlta.setOnClickListener {
@@ -78,9 +84,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun fallo(){
+        Snackbar.make(binding.root, "Usuario o contraseña no son correctos", Snackbar.LENGTH_SHORT).show()
+        // Limpiar los campos de texto
+        binding.CuadroNombre.text?.clear()
+        binding.cuadroContra.text?.clear()
 
-    private fun validarCredenciales(usuario: String, contrasena: String): Boolean {
-        // Consultar la base de datos para verificar las credenciales
-        return db.checkUserAndPassword(usuario, contrasena)
+        // Devolver el foco al campo de usuario
+        binding.CuadroNombre.requestFocus()
     }
+
+
+
 }
