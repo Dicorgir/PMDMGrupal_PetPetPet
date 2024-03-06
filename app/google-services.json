@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1036122584976",
+    "project_id": "petpetpet-2460d",
+    "storage_bucket": "petpetpet-2460d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036122584976:android:c7a6c529655fe400c96515",
+        "android_client_info": {
+          "package_name": "com.example.petpetpet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJGSAzcoSE21hvb5i_8ckluv_dEdNZCG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
