@@ -28,5 +28,6 @@
     <string name="TituloLista">Lista de Animales Almacenados</string>
     <string name="vacio"></string>
     <string name="verAnimal">+</string>
+    <string name="strTituloRegis">Animales Compania</string>
 
 </resources>
