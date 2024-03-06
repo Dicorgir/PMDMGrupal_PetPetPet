@@ -2,7 +2,7 @@ package com.example.petpetpet
 
 
 // Manejo datos para firebase
-class BaseDatos {
+class BaseDatoss {
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "PetPetPetBD"

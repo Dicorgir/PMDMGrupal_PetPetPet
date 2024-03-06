@@ -14,7 +14,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BaseDatoss(context: Context) :
+class BaseDatos(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
