@@ -185,6 +185,11 @@ class MainActivity3 : AppCompatActivity() {
             val lista = Intent(this@MainActivity3, Lista::class.java)
             startActivity(lista)
         }
+        // Botón administrar Usuarios
+        binding.buttonAdministrarUsuarios.setOnClickListener {
+            val intent = Intent(this, MainActivityAdminUsuarios::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun abrirSelectorDeArchivos() {

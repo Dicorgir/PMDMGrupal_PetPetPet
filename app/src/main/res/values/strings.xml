@@ -27,6 +27,10 @@
     <string name="ID_PERRO">ID_PERRO</string>
     <string name="TituloLista">Lista de Animales Almacenados</string>
     <string name="admin">Administrador (Sí/No)</string>
+    <string name="nombreCompleto">Nombre Completo: </string>
+    <string name="nombreUsuario">Nombre Usuario: </string>
+    <string name="alta_baja">Alta/Baja</string>
+    <string name="botonAdmin">Admin. Usuarios</string>
     <string name="vacio"></string>
 
 </resources>
