@@ -20,7 +20,7 @@
         android:id="@+id/botonRegistrarUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="112dp"
         android:text="@string/BotonRegistrarUsuario"
         app:layout_constraintEnd_toEndOf="@+id/cuadroContraUsuario"
         app:layout_constraintHorizontal_bias="0.512"
@@ -103,5 +103,19 @@
             android:hint="@string/Usuario"
             android:textColorHint="#757575" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="44dp"
+        android:minHeight="48dp"
+        android:text="@string/admin"
+        app:layout_constraintBottom_toTopOf="@+id/botonRegistrarUsuario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cuadroContraUsuario"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
