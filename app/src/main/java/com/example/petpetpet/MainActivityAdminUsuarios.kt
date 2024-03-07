@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.petpetpet.databinding.PestanaAdministrarUsuariosBinding
 
+//Chuapa diego
 class MainActivityAdminUsuarios : AppCompatActivity() {
     private lateinit var binding: PestanaAdministrarUsuariosBinding
 
