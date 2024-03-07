@@ -1,5 +1,6 @@
 package com.example.petpetpet
 
+
 data class Usuario(
     val nombreUsuario: String,
     val nombreCompleto: String,
@@ -7,4 +8,6 @@ data class Usuario(
     val tipo: String,
     val estado: String) {
 
-}
+    }
+
+
