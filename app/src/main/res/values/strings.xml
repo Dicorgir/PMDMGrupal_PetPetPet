@@ -31,6 +31,8 @@
     <string name="nombreUsuario">Nombre Usuario: </string>
     <string name="alta_baja">Alta/Baja</string>
     <string name="botonAdmin">Admin. Usuarios</string>
+    <string name="TituloAdministrarUsuarios">Administrar Usuarios</string>
+    <string name="tituloAdminSiNo">Admin SI/NO</string>
     <string name="vacio"></string>
 
 </resources>
