@@ -43,6 +43,9 @@
         <activity
             android:name=".Lista"
             android:exported="false" />
+        <activity
+            android:name=".MainActivityAdminUsuarios"
+            android:exported="false" />
     </application>
 
 </manifest>
