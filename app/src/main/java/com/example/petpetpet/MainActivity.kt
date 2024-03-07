@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             databaseUsuarios.child(usuarioIngresado).child(usuarioIngresado).get().addOnSuccessListener {
-                databaseUsuarios.child(usuarioIngresado).child("contrasena").get().addOnSuccessListener {
+                databaseUsuarios.child(usuarioIngresado).child("contrasenaval").get().addOnSuccessListener {
                     val contrasenaReal = it.value.toString()
                     if (contrasenaReal == contrasenaIngresada) {
                         val intent = Intent(this, MainActivity3::class.java)
