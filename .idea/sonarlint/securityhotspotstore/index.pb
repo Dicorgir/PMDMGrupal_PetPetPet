@@ -9,3 +9,5 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 h
 8app/src/main/java/com/example/petpetpet/MainActivity2.kt,5\f\5fe32a709df35bf4459cb8df3e8d5b82f2ba4b7c
+b
+2app/src/main/java/com/example/petpetpet/Usuario.kt,8\a\8a646aa707b58dce200126d2f61e3d20d5143195
