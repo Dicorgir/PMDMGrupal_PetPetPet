@@ -35,5 +35,6 @@
     <string name="tituloAdminSiNo">Admin SI/NO</string>
     <string name="vacio"></string>
     <string name="verAnimal">+</string>
+    <string name="strTituloRegis">Animales Compania</string>
 
 </resources>
