@@ -29,10 +29,10 @@
     <string name="admin">Administrador (Sí/No)</string>
     <string name="nombreCompleto">Nombre Completo: </string>
     <string name="nombreUsuario">Nombre Usuario: </string>
-    <string name="alta_baja">Alta/Baja</string>
+    <string name="alta_baja">Baja/Alta</string>
     <string name="botonAdmin">Admin. Usuarios</string>
     <string name="TituloAdministrarUsuarios">Administrar Usuarios</string>
-    <string name="tituloAdminSiNo">Admin SI/NO</string>
+    <string name="tituloAdminSiNo">Admin</string>
     <string name="vacio"></string>
     <string name="verAnimal">+</string>
     <string name="strTituloRegis">Animales Compania</string>

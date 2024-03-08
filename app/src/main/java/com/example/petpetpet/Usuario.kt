@@ -8,6 +8,7 @@ data class Usuario(
     val tipo: String,
     val estado: String) {
 
+
     }
 
 

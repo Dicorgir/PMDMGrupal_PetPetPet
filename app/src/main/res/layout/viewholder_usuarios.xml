@@ -38,23 +38,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/tituloAdminSiNo"
+            android:id="@+id/adminousuario"
+            android:layout_width="0dp"
+            android:layout_height="13dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintStart_toEndOf="@+id/nombreUsuario"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textoAdminSiONo"
+            android:id="@+id/estado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="52dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/nombreUsuario"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintTop_toBottomOf="@+id/adminousuario" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
