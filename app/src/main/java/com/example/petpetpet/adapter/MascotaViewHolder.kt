@@ -8,10 +8,10 @@ import com.example.petpetpet.VerAnimal
 import com.bumptech.glide.Glide
 import com.example.petpetpet.databinding.ViewholderMascotaBinding
 
-class MascotaViewHolder(view: View): RecyclerView.ViewHolder(view){
+class MascotaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val binding = ViewholderMascotaBinding.bind(view)
 
-    fun render(mascota: Mascota){
+    fun render(mascota: Mascota) {
         binding.nombrePerro.text = mascota.nombre
         binding.identificadorPerro.text = mascota.id.toString()
         Glide.with(binding.fotito.context).load(mascota.imagen).into(binding.fotito)

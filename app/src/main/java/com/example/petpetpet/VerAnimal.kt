@@ -2,19 +2,20 @@ package com.example.petpetpet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.petpetpet.databinding.ActivityVerAnimalBinding
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class VerAnimal : AppCompatActivity() {
-    private lateinit var  binding: ActivityVerAnimalBinding
+    private lateinit var binding: ActivityVerAnimalBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityVerAnimalBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_ver_animal)
 
-        // Recuperar los datos del intent
         val cod = intent.getIntExtra("cod", 0)
         val nombre = intent.getStringExtra("nombre")
         val raza = intent.getStringExtra("raza")
@@ -24,19 +25,13 @@ class VerAnimal : AppCompatActivity() {
         val dni = intent.getStringExtra("dni")
         val foto = intent.getStringExtra("foto")
 
-        // Establecer el texto de los TextView correspondientes
-        binding.codAnimal.setText(cod.toString())
-        binding.nomAnimal.setText(nombre)
-        binding.razaAnimal.setText(raza)
-        binding.fechAnimal.setText(fechaNacimiento.toString()) // Usar toString() para convertir la fecha a cadena
-        binding.sexoAnimal.setText(sexo)
-        binding.dniAnimal.setText(dni)
-
-        Glide.with(binding.fotoAnimal.context).load(foto).into(binding.fotoAnimal)
-
-        // Volver a la actividad anterior
-        binding.btnVolverListado.setOnClickListener {
-            finish()
-        }
+        // Ahora, actualiza la interfaz de usuario con estos valores
+        findViewById<TextView>(R.id.cod_animal).text = cod.toString()
+        findViewById<TextView>(R.id.nom_animal).text = nombre
+        findViewById<TextView>(R.id.raza_animal).text = raza
+        findViewById<TextView>(R.id.sexo_animal).text = sexo
+        findViewById<TextView>(R.id.dni_animal).text = dni
+        findViewById<TextView>(R.id.fech_animal).text = SimpleDateFormat("dd/MM/yyyy").format(fechaNacimiento)
+        Glide.with(this).load(foto).into(findViewById<ImageView>(R.id.fotoAnimal))
     }
 }
