@@ -2,19 +2,26 @@ package com.example.petpetpet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.petpetpet.databinding.ActivityVerAnimalBinding
 import java.text.SimpleDateFormat
 import java.util.Date
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class VerAnimal : AppCompatActivity() {
     private lateinit var binding: ActivityVerAnimalBinding
 
+    companion object {
+        private const val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ver_animal)
+        binding = ActivityVerAnimalBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val cod = intent.getIntExtra("cod", 0)
         val nombre = intent.getStringExtra("nombre")
@@ -26,12 +33,23 @@ class VerAnimal : AppCompatActivity() {
         val foto = intent.getStringExtra("foto")
 
         // Ahora, actualiza la interfaz de usuario con estos valores
-        findViewById<TextView>(R.id.cod_animal).text = cod.toString()
-        findViewById<TextView>(R.id.nom_animal).text = nombre
-        findViewById<TextView>(R.id.raza_animal).text = raza
-        findViewById<TextView>(R.id.sexo_animal).text = sexo
-        findViewById<TextView>(R.id.dni_animal).text = dni
-        findViewById<TextView>(R.id.fech_animal).text = SimpleDateFormat("dd/MM/yyyy").format(fechaNacimiento)
-        Glide.with(this).load(foto).into(findViewById<ImageView>(R.id.fotoAnimal))
+        binding.codAnimal.setText(cod.toString())
+        binding.nomAnimal.setText(nombre)
+        binding.razaAnimal.setText(raza)
+        binding.sexoAnimal.setText(sexo)
+        binding.dniAnimal.setText(dni)
+        binding.fechAnimal.setText(SimpleDateFormat("dd/MM/yyyy").format(fechaNacimiento))
+
+        // Comprueba si tienes el permiso READ_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            // Si no se concede el permiso, solicítalo
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE)
+        } else {
+            // Si se concede el permiso, carga la imagen como antes
+            Glide.with(this).load(foto).into(binding.fotoAnimal)
+        }
     }
 }
