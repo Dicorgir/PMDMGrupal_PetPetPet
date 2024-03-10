@@ -21,13 +21,12 @@
         android:id="@+id/mostrarUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:text="@string/tituloRegistro"
+        android:textColor="@color/black"
         android:textSize="23sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textoUsuario" />
 
@@ -196,30 +195,30 @@
 
     <Button
         android:id="@+id/botonAlta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="88dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="36dp"
         android:text="@string/BotonAlta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
         android:id="@+id/botonModifica"
-        android:layout_width="111dp"
-        android:layout_height="51dp"
+        android:layout_width="110dp"
+        android:layout_height="42dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="28dp"
         android:text="@string/BotonModifica"
         app:layout_constraintStart_toEndOf="@+id/botonAlta"
         app:layout_constraintTop_toBottomOf="@+id/cuadroNac" />
 
     <Button
         android:id="@+id/botonBorrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="97dp"
+        android:layout_height="41dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="28dp"
         android:text="@string/BotonBorrar"
         app:layout_constraintStart_toEndOf="@+id/botonModifica"
         app:layout_constraintTop_toBottomOf="@+id/cuadroDNI" />
@@ -239,7 +238,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="@string/BotonConsultaTodas"
         app:layout_constraintStart_toEndOf="@+id/botonConsulta"
         app:layout_constraintTop_toBottomOf="@+id/botonModifica" />
