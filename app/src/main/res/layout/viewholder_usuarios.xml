@@ -11,21 +11,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="8dp">
 
         <TextView
             android:id="@+id/nombreCompletoUsuario"
             android:layout_width="162dp"
             android:layout_height="32dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="45dp"
+            android:layout_marginEnd="204dp"
             android:layout_marginBottom="45dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="NombreCompleto" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/nombreUsuario"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="28dp"
             android:text="NombreUsuario"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/nombreCompletoUsuario"
@@ -43,9 +43,9 @@
         <TextView
             android:id="@+id/adminousuario"
             android:layout_width="0dp"
-            android:layout_height="13dp"
+            android:layout_height="20dp"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="17dp"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/nombreUsuario"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
         <TextView
             android:id="@+id/estado"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginStart="14dp"
             android:layout_marginTop="8dp"
             android:textSize="16sp"
