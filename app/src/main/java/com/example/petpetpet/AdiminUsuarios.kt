@@ -17,6 +17,9 @@ class AdiminUsuarios : AppCompatActivity() {
         binding = PestanaAdministrarUsuariosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val usuario = intent.getStringExtra("usuario").toString()
+        val tipo = intent.getStringExtra("tipo").toString()
+
         binding.botonConsultarTodosUsuarios.setOnClickListener {
             val intent = Intent(this, ListaUsuarios::class.java)
             startActivity(intent)

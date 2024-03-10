@@ -40,9 +40,10 @@ class RegistroAnimales : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
         // Recuperar el nombre de usuario del SharedPreferences
-        val username = intent.getStringExtra("username").toString()
+        val username = intent.getStringExtra("usuario").toString()
+        val tipo = intent.getStringExtra("tipo").toString()
 
-        if (intent.getStringExtra("tipo") == "usuario") {
+        if (tipo == "usuario") {
             binding.buttonAdministrarUsuarios.isVisible = false
             binding.botonAlta.isVisible = false
             binding.botonModifica.isVisible = false
@@ -309,11 +310,15 @@ class RegistroAnimales : AppCompatActivity() {
         }
         binding.botonConsultarTodas.setOnClickListener {
             val lista = Intent(this@RegistroAnimales, Lista::class.java)
+            lista.putExtra("usuario", username)
+            lista.putExtra("tipo", tipo)
             startActivity(lista)
         }
         // Botón administrar Usuarios
         binding.buttonAdministrarUsuarios.setOnClickListener {
             val intent = Intent(this, AdiminUsuarios::class.java)
+            intent.putExtra("usuario", username)
+            intent.putExtra("tipo", tipo)
             startActivity(intent)
         }
     }
