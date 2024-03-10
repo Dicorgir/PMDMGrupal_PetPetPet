@@ -7,6 +7,7 @@ import com.example.petpetpet.databinding.ActivityVerAnimalBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -50,6 +51,13 @@ class VerAnimal : AppCompatActivity() {
         } else {
             // Si se concede el permiso, carga la imagen como antes
             Glide.with(this).load(foto).into(binding.fotoAnimal)
+
+        }
+        binding.btnVolverListado.setOnClickListener {
+            val registro = Intent(this@VerAnimal, RegistroAnimales::class.java)
+            registro.putExtra("usuario", intent.getStringExtra("usuario"))
+            registro.putExtra("tipo", intent.getStringExtra("tipo"))
+            startActivity(registro)
         }
     }
 }
