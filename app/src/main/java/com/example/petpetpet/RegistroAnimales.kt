@@ -42,6 +42,22 @@ class RegistroAnimales : AppCompatActivity() {
             binding.botonModifica.isVisible = false
             binding.botonBorrar.isVisible = false
             binding.botonConsulta.isVisible = false
+            binding.button.isVisible = false
+            binding.textView10.isVisible = false
+            binding.textView4.isVisible = false
+            binding.cuadroIdenti.isVisible = false
+            binding.cuadroNombre.isVisible = false
+            binding.cuadroRaza.isVisible = false
+            binding.cuadroSexo.isVisible = false
+            binding.cuadroNac.isVisible = false
+            binding.cuadroDNI.isVisible = false
+            binding.textView6.isVisible = false
+            binding.textView7.isVisible = false
+            binding.textView8.isVisible = false
+            binding.textView10.isVisible = false
+            binding.textView11.isVisible = false
+            binding.imagenGaler.isVisible = false
+
 
         }
 
