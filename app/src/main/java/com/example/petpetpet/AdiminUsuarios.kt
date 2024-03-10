@@ -37,6 +37,12 @@ class AdiminUsuarios : AppCompatActivity() {
             val nombreUsuario = binding.cuadroUsuarioUsur.text.toString().trim()
             consultarYMostrarUsuario(nombreUsuario)
         }
+        binding.botonVolverUsuarios.setOnClickListener {
+            val registro = Intent(this@AdiminUsuarios, RegistroAnimales::class.java)
+            registro.putExtra("usuario", usuario)
+            registro.putExtra("tipo", tipo)
+            startActivity(registro)
+        }
     }
 
     private fun eliminarUsuario(nombreUsuario: String) {
