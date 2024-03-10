@@ -29,12 +29,15 @@ class Lista : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        val nombreUsuario = sharedPreferences.getString("username", "")
+        val nombreUsuario = intent.getStringExtra("usuario").toString()
+        val tipo = intent.getStringExtra("tipo").toString()
 
         binding.mostrarUsuario.text = "Usuario: $nombreUsuario"
 
         binding.btnVolver.setOnClickListener {
             val registro = Intent(this@Lista, RegistroAnimales::class.java)
+            registro.putExtra("usuario", nombreUsuario)
+            registro.putExtra("tipo", tipo)
             startActivity(registro)
         }
 
