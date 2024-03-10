@@ -6,25 +6,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.petpetpet.databinding.PestanaAdministrarUsuariosBinding
 import com.google.firebase.database.*
-
+// Clase que permite a los administradores modificar, consultar y eliminar usuarios
 class AdiminUsuarios : AppCompatActivity() {
+    // Inicialización de variables
     private lateinit var binding: PestanaAdministrarUsuariosBinding
+    // Referencia a la base de datos
     private var databaseUsuarios: DatabaseReference =
         FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
-
+    // Función que se ejecuta al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inicialización de la vista
         binding = PestanaAdministrarUsuariosBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // Obtener el usuario y el tipo de usuario
         val usuario = intent.getStringExtra("usuario").toString()
         val tipo = intent.getStringExtra("tipo").toString()
 
+        // Verificar que el usuario sea administrador
         binding.botonConsultarTodosUsuarios.setOnClickListener {
             val intent = Intent(this, ListaUsuarios::class.java)
             startActivity(intent)
         }
-
         binding.botonBorrarUsuarios.setOnClickListener {
             val nombreUsuario = binding.cuadroUsuarioUsur.text.toString().trim()
             eliminarUsuario(nombreUsuario)
@@ -37,6 +40,7 @@ class AdiminUsuarios : AppCompatActivity() {
             val nombreUsuario = binding.cuadroUsuarioUsur.text.toString().trim()
             consultarYMostrarUsuario(nombreUsuario)
         }
+        // Botón para volver a la pantalla de registro de animales
         binding.botonVolverUsuarios.setOnClickListener {
             val registro = Intent(this@AdiminUsuarios, RegistroAnimales::class.java)
             registro.putExtra("usuario", usuario)
@@ -44,12 +48,14 @@ class AdiminUsuarios : AppCompatActivity() {
             startActivity(registro)
         }
     }
-
+    // Función que elimina un usuario de la base de datos
     private fun eliminarUsuario(nombreUsuario: String) {
         if (nombreUsuario.isNotEmpty()) {
+            // Referencia al usuario en la base de datos
             val referenciaUsuario = databaseUsuarios.child(nombreUsuario)
-
+            // Eliminar el usuario
             referenciaUsuario.addListenerForSingleValueEvent(object : ValueEventListener {
+                // Función que se ejecuta al obtener el valor
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         referenciaUsuario.removeValue()
@@ -64,14 +70,16 @@ class AdiminUsuarios : AppCompatActivity() {
                 }
             })
         } else {
+            // Mostrar mensaje si el nombre de usuario es inválido
             mostrarMensaje("Ingrese un nombre de usuario válido")
         }
     }
-
+    // Función que modifica un usuario en la base de datos
     private fun modificarUsuario(nombreUsuario: String) {
+        // Verificar que el nombre de usuario no esté vacío
         if (nombreUsuario.isNotEmpty()) {
             val referenciaUsuario = databaseUsuarios.child(nombreUsuario)
-
+            // Verificar que el usuario exista
             referenciaUsuario.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -92,9 +100,10 @@ class AdiminUsuarios : AppCompatActivity() {
                         referenciaUsuario.child("nombreUsuario").setValue(nuevoNombreUsuario)
                         referenciaUsuario.child("tipo").setValue(nuevoTipo)
                         referenciaUsuario.child("estado").setValue(nuevoEstado)
-
+                        // Mostrar mensaje de éxito
                         mostrarMensaje("Usuario modificado exitosamente")
                     } else {
+                        // Mostrar mensaje si el usuario no existe
                         mostrarMensaje("El usuario no existe")
                     }
                 }
@@ -104,14 +113,19 @@ class AdiminUsuarios : AppCompatActivity() {
                 }
             })
         } else {
+            // Mostrar mensaje si el nombre de usuario es inválido
             mostrarMensaje("Ingrese un nombre de usuario válido")
         }
     }
+    // Función que consulta y muestra un usuario de la base de datos
     private fun consultarYMostrarUsuario(nombreUsuario: String) {
+        // Verificar que el nombre de usuario no esté vacío
         if (nombreUsuario.isNotEmpty()) {
+            // Referencia al usuario en la base de datos
             val referenciaUsuario = databaseUsuarios.child(nombreUsuario)
-
+            // Verificar que el usuario exista
             referenciaUsuario.addListenerForSingleValueEvent(object : ValueEventListener {
+                // Función que se ejecuta al obtener el valor
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         // Obtener los valores de la base de datos
@@ -127,6 +141,7 @@ class AdiminUsuarios : AppCompatActivity() {
                         binding.switch4.isChecked = tipo == "administrador"
                         binding.switchAltaBaja.isChecked = estado == "activo"
                     } else {
+                        // Mostrar mensaje si el usuario no existe
                         mostrarMensaje("El usuario no existe")
                     }
                 }
@@ -136,14 +151,16 @@ class AdiminUsuarios : AppCompatActivity() {
                 }
             })
         } else {
+            // Mostrar mensaje si el nombre de usuario es inválido
             mostrarMensaje("Ingrese un nombre de usuario válido")
         }
     }
 
 
 
-
+    // Función que muestra un mensaje en pantalla
     private fun mostrarMensaje(mensaje: String) {
+        // Mostrar mensaje
         Toast.makeText(
             this@AdiminUsuarios,
             mensaje,

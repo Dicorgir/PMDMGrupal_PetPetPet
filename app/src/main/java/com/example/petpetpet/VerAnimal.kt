@@ -11,19 +11,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
+// Clase VerAnimal
 class VerAnimal : AppCompatActivity() {
     private lateinit var binding: ActivityVerAnimalBinding
-
+    // Método onCreate
     companion object {
         private const val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
     }
-
+    // Método onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVerAnimalBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // Obtener los valores de los extras
         val cod = intent.getIntExtra("cod", 0)
         val nombre = intent.getStringExtra("nombre")
         val raza = intent.getStringExtra("raza")
@@ -52,6 +52,7 @@ class VerAnimal : AppCompatActivity() {
             // Si se concede el permiso, carga la imagen como antes
             Glide.with(this).load(foto).into(binding.fotoAnimal)
         }
+        // Botón Volver
         binding.btnVolverListado.setOnClickListener {
             val registro = Intent(this@VerAnimal, RegistroAnimales::class.java)
             registro.putExtra("usuario", intent.getStringExtra("usuario"))
