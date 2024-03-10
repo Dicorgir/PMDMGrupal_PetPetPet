@@ -4,17 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.petpetpet.BaseDatos
-import com.example.petpetpet.MainActivity2
-import com.example.petpetpet.MainActivity3
 import com.example.petpetpet.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class MainActivity : AppCompatActivity() {
+class Login : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
@@ -64,8 +60,33 @@ class MainActivity : AppCompatActivity() {
                 databaseUsuarios.child(usuarioIngresado).child("contrasenaval").get().addOnSuccessListener {
                     val contrasenaReal = it.value.toString()
                     if (contrasenaReal == contrasenaIngresada) {
-                        val intent = Intent(this, MainActivity3::class.java)
-                        startActivity(intent)
+                        databaseUsuarios.child(usuarioIngresado).child("estado").get().addOnSuccessListener { dataSnapshot ->
+                            if (dataSnapshot.exists()) {
+                                val estado = dataSnapshot.value.toString()
+                                if (estado == "activo") {
+
+                                    databaseUsuarios.child(usuarioIngresado).child("tipo").get().addOnSuccessListener { dataSnapshot ->
+                                        if (dataSnapshot.exists()) {
+                                            val tipo = dataSnapshot.value.toString()
+                                            val intent = Intent(this, RegistroAnimales::class.java)
+                                            intent.putExtra("usuario", usuarioIngresado)
+                                            intent.putExtra("tipo", tipo)
+                                            startActivity(intent)
+                                        } else {
+                                            fallo()
+                                        }
+                                    }.addOnCanceledListener {
+                                        fallo()
+                                    }
+                                } else {
+                                    fallo()
+                                }
+                            } else {
+                                fallo()
+                            }
+                        }.addOnCanceledListener {
+                            fallo()
+                        }
                     }else {
                         fallo()
                     }
@@ -79,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Botón de registro
         binding.botonDarAlta.setOnClickListener {
-            val intent = Intent(this, MainActivity2::class.java)
+            val intent = Intent(this, Registrar::class.java)
             startActivity(intent)
         }
     }

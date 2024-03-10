@@ -26,7 +26,7 @@ class Lista : AppCompatActivity() {
         binding.mostrarUsuario.text = "Usuario: $nombreUsuario"
 
         binding.btnVolver.setOnClickListener {
-            val registro = Intent(this@Lista, MainActivity3::class.java)
+            val registro = Intent(this@Lista, RegistroAnimales::class.java)
             startActivity(registro)
         }
 
