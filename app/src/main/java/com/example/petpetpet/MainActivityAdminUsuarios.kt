@@ -116,7 +116,7 @@ class MainActivityAdminUsuarios : AppCompatActivity() {
                         binding.cuadroUsuarioUsur.setText(nombreUsuario)
 
                         binding.switch4.isChecked = tipo == "administrador"
-                        binding.switchAltaBaja.isChecked = estado == "baja"
+                        binding.switchAltaBaja.isChecked = estado == "activo"
                     } else {
                         mostrarMensaje("El usuario no existe")
                     }
