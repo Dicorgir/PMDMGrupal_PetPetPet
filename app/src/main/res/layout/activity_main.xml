@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cuadroContraUsuario"
-        app:layout_constraintVertical_bias="0.248"
+        app:layout_constraintVertical_bias="0.179"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -75,8 +75,8 @@
         app:boxBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/cuadroNombreUsuario"
         app:layout_constraintStart_toStartOf="@+id/cuadroNombreUsuario"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@+id/cuadroNombreUsuario">
+        app:layout_constraintTop_toBottomOf="@+id/cuadroNombreUsuario"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cuadroContra"
@@ -88,26 +88,28 @@
 
     <Button
         android:id="@+id/BotonLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="197dp"
         android:text="@string/textoLogin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.232"
+        app:layout_constraintHorizontal_bias="0.205"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="0.417" />
+        app:layout_constraintTop_toTopOf="@+id/cuadroContraUsuario"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/botonDarAlta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="155dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="197dp"
         android:text="@string/DarseAlta"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/BotonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintStart_toStartOf="@+id/BotonLogin"
+        app:layout_constraintTop_toTopOf="@+id/cuadroContraUsuario"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
