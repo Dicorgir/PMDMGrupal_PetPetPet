@@ -6,12 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.petpetpet.databinding.PestanaRegistroBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import java.text.SimpleDateFormat
 
 class RegistroAnimales : AppCompatActivity() {
@@ -20,7 +25,6 @@ class RegistroAnimales : AppCompatActivity() {
     private var rutaImagen: String = "" // Inicializa la variable con una cadena vacía
     private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
     private var databaseMascotas: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Mascotas")
-
     companion object {
         private const val CODIGO_SELECCION_IMAGEN = 100
     }
@@ -54,8 +58,6 @@ class RegistroAnimales : AppCompatActivity() {
         }
         // Botón para insertar datos
         binding.botonAlta.setOnClickListener {
-            val db = BaseDatos(this)
-
             // Verifica si alguno de los campos está vacío
             if (binding.cuadroIdenti.text.isEmpty() ||
                 binding.cuadroNombre.text.isEmpty() ||
@@ -67,29 +69,71 @@ class RegistroAnimales : AppCompatActivity() {
                 // Muestra un Snackbar indicando que se deben completar todos los campos
                 Snackbar.make(binding.root, "Por favor, completa todos los campos", Snackbar.LENGTH_SHORT).show()
             } else {
-                val formato = SimpleDateFormat("dd-MM-yyyy")
-                val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
-                    Mascota(
-                        id = binding.cuadroIdenti.text.toString().toInt(),
-                        nombre = binding.cuadroNombre.text.toString(),
-                        imagen = rutaImagen,
-                        raza = binding.cuadroRaza.text.toString(),
-                        sexo = binding.cuadroSexo.text.toString(),
-                        fechaNacimiento = it,
-                        dni = binding.cuadroDNI.text.toString()
-                    )
-                }
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("counter")
 
-                if (mascota != null) {
-                    databaseMascotas.child(mascota.id.toString()).setValue(mascota).addOnSuccessListener {
-                        val snackbar = Snackbar.make(binding.root, "Operación alta realizada", Snackbar.LENGTH_SHORT)
-                        snackbar.show()
-                    }.addOnFailureListener {
-                        val snackbar = Snackbar.make(binding.root, "Error al insertar la mascota", Snackbar.LENGTH_SHORT)
-                        snackbar.show()
+
+                var counter: Int? = null  // Define counter aquí
+
+                myRef.runTransaction(object : Transaction.Handler {
+                    override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                        counter = mutableData.getValue(Int::class.java)
+                        if (counter == null) {
+                            counter = 0
+                        }
+
+                        // Incrementa el contador
+                        counter = counter!! + 1
+
+                        // Establece el valor incrementado en la base de datos
+                        mutableData.value = counter
+
+                        return Transaction.success(mutableData)
                     }
 
-                }
+                    override fun onComplete(
+                        databaseError: DatabaseError?,
+                        committed: Boolean,
+                        dataSnapshot: DataSnapshot?
+                    ) {
+                        // Transacción completada
+                        Log.d("Firebase", "Transacción completada")
+
+                        val formato = SimpleDateFormat("dd-MM-yyyy")
+                        val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
+                            Mascota(
+                                nombre = binding.cuadroNombre.text.toString(),
+                                imagen = rutaImagen,
+                                raza = binding.cuadroRaza.text.toString(),
+                                sexo = binding.cuadroSexo.text.toString(),
+                                fechaNacimiento = it.toString(),
+                                dni = binding.cuadroDNI.text.toString()
+                            )
+                        }
+
+                        if (mascota != null) {
+                            // Usa el contador como el nombre para buscar en Firebase
+                            databaseMascotas.child(counter.toString()).setValue(mascota)
+                                .addOnSuccessListener {
+                                    val snackbar = Snackbar.make(
+                                        binding.root,
+                                        "Operación alta realizada",
+                                        Snackbar.LENGTH_SHORT
+                                    )
+                                    snackbar.show()
+                                }.addOnFailureListener {
+                                    val snackbar = Snackbar.make(
+                                        binding.root,
+                                        "Error al insertar la mascota",
+                                        Snackbar.LENGTH_SHORT
+                                    )
+                                    snackbar.show()
+                                }
+                        }
+                    }
+                })
+
+                // Limpiar los campos y el ImageView
 
                 binding.cuadroIdenti.text.clear()
                 binding.cuadroNombre.text.clear()
@@ -102,78 +146,68 @@ class RegistroAnimales : AppCompatActivity() {
         }
         // Botón de modificación
         binding.botonModifica.setOnClickListener {
-
-            databaseMascotas.child(binding.cuadroIdenti.text.toString()).get().addOnSuccessListener {
-                if (it.exists()) {
-                    val formato = SimpleDateFormat("dd-MM-yyyy")
-                    val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
-                        Mascota(
-                            id = binding.cuadroIdenti.text.toString().toInt(),
-                            nombre = binding.cuadroNombre.text.toString(),
-                            imagen = rutaImagen,
-                            raza = binding.cuadroRaza.text.toString(),
-                            sexo = binding.cuadroSexo.text.toString(),
-                            fechaNacimiento = it,
-                            dni = binding.cuadroDNI.text.toString()
-                        )
-                    }
-                    if (mascota != null) {
-                        databaseMascotas.child(mascota.id.toString()).setValue(mascota).addOnSuccessListener {
-                            val snackbar = Snackbar.make(binding.root, "Operación modificar realizada", Snackbar.LENGTH_SHORT)
-                            snackbar.show()
-                        }.addOnFailureListener {
-                            val snackbar = Snackbar.make(binding.root, "Error al modificar la mascota", Snackbar.LENGTH_SHORT)
-                            snackbar.show()
-                        }
-                    }
-                } else {
-                    val snackbar = Snackbar.make(binding.root, "No hay mascota disponible con ese ID", Snackbar.LENGTH_SHORT)
-                    snackbar.show()
-                }
-            }.addOnFailureListener {
-                val snackbar = Snackbar.make(binding.root, "Error al modificar la mascota", Snackbar.LENGTH_SHORT)
-                snackbar.show()
-            }
-            // Verifica si alguno de los campos está vacío
-            if (binding.cuadroIdenti.text.isEmpty() ||
-                binding.cuadroNombre.text.isEmpty() ||
-                binding.cuadroRaza.text.isEmpty() ||
-                binding.cuadroSexo.text.isEmpty() ||
-                binding.cuadroNac.text.isEmpty() ||
-                binding.cuadroDNI.text.isEmpty()
-            ) {
-                // Muestra un Snackbar indicando que se deben completar todos los campos
-                Snackbar.make(binding.root, "Por favor, completa todos los campos", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-        // Botón de consulta
-        binding.botonConsulta.setOnClickListener {
-            val db = BaseDatos(this)
             val idText = binding.cuadroIdenti.text.toString()
 
             if (idText.isNotEmpty()) {
                 val id = idText.toInt()
 
-                val mascota = db.consultarMascota(id)
+                val formato = SimpleDateFormat("dd-MM-yyyy")
+                val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
+                    Mascota(
+                        nombre = binding.cuadroNombre.text.toString(),
+                        imagen = rutaImagen,
+                        raza = binding.cuadroRaza.text.toString(),
+                        sexo = binding.cuadroSexo.text.toString(),
+                        fechaNacimiento = it.toString(),
+                        dni = binding.cuadroDNI.text.toString()
+                    )
+                }
 
                 if (mascota != null) {
-                    binding.cuadroNombre.setText(mascota.nombre)
-                    binding.cuadroRaza.setText(mascota.raza)
-                    binding.cuadroSexo.setText(mascota.sexo)
-                    binding.cuadroNac.setText(SimpleDateFormat("dd-MM-yyyy").format(mascota.fechaNacimiento))
-                    binding.cuadroDNI.setText(mascota.dni)
-                    Snackbar.make(binding.root, "Operación consulta realizada", Snackbar.LENGTH_SHORT).show()
+                    databaseMascotas.child(id.toString()).setValue(mascota).addOnSuccessListener {
+                        val snackbar = Snackbar.make(binding.root, "Operación modificar realizada", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                    }.addOnFailureListener {
+                        val snackbar = Snackbar.make(binding.root, "Error al modificar la mascota", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                    }
+                }
+            } else {
+                val snackbar = Snackbar.make(binding.root, "Por favor, ingresa un ID antes de modificar", Snackbar.LENGTH_SHORT)
+                snackbar.show()
+            }
+        }
+        // Botón de consulta
+        binding.botonConsulta.setOnClickListener {
+            val idText = binding.cuadroIdenti.text.toString()
 
-                } else {
-                    // Mostrar Snackbar indicando que no hay mascota disponible con ese ID
-                    Snackbar.make(binding.root, "No hay mascota disponible con ese ID", Snackbar.LENGTH_SHORT).show()
-                    // Limpiar los campos y el ImageView
-                    binding.cuadroNombre.text.clear()
-                    binding.cuadroRaza.text.clear()
-                    binding.cuadroSexo.text.clear()
-                    binding.cuadroNac.text.clear()
-                    binding.cuadroDNI.text.clear()
-                    binding.imagenGaler.setImageURI(null)
+            if (idText.isNotEmpty()) {
+                val id = idText.toInt()
+
+                databaseMascotas.child(id.toString()).get().addOnSuccessListener { dataSnapshot ->
+                    val mascota = dataSnapshot.getValue(Mascota::class.java)
+
+                    if (mascota != null) {
+                        binding.cuadroNombre.setText(mascota.nombre)
+                        binding.cuadroRaza.setText(mascota.raza)
+                        binding.cuadroSexo.setText(mascota.sexo)
+                        binding.cuadroNac.setText(mascota.fechaNacimiento)
+                        binding.cuadroDNI.setText(mascota.dni)
+                        Snackbar.make(binding.root, "Operación consulta realizada", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        // Mostrar Snackbar indicando que no hay mascota disponible con ese ID
+                        Snackbar.make(binding.root, "No hay mascota disponible con ese ID", Snackbar.LENGTH_SHORT).show()
+                        // Limpiar los campos y el ImageView
+                        binding.cuadroNombre.text.clear()
+                        binding.cuadroRaza.text.clear()
+                        binding.cuadroSexo.text.clear()
+                        binding.cuadroNac.text.clear()
+                        binding.cuadroDNI.text.clear()
+                        binding.imagenGaler.setImageURI(null)
+                    }
+                }.addOnFailureListener {
+                    // Mostrar Snackbar indicando que ocurrió un error al consultar la mascota
+                    Snackbar.make(binding.root, "Error al consultar la mascota", Snackbar.LENGTH_SHORT).show()
                 }
             } else {
                 // Mostrar Snackbar indicando que es necesario ingresar un ID antes de consultar
@@ -181,10 +215,8 @@ class RegistroAnimales : AppCompatActivity() {
             }
         }
 
-
         // Botón de borrado
         binding.botonBorrar.setOnClickListener {
-            val db = BaseDatos(this)
             val idText = binding.cuadroIdenti.text.toString()
 
             // Verifica si el campo de ID está vacío
@@ -193,16 +225,21 @@ class RegistroAnimales : AppCompatActivity() {
                 Snackbar.make(binding.root, "Por favor, ingresa un ID antes de borrar", Snackbar.LENGTH_SHORT).show()
             } else {
                 val id = idText.toInt()
-                db.borrarMascota(id)
-                val snackbar = Snackbar.make(binding.root, "Operación borrado realizada", Snackbar.LENGTH_LONG)
-                snackbar.show()
+                databaseMascotas.child(id.toString()).removeValue().addOnSuccessListener {
+                    val snackbar = Snackbar.make(binding.root, "Operación borrado realizada", Snackbar.LENGTH_LONG)
+                    snackbar.show()
 
-                binding.cuadroIdenti.text.clear()
-                binding.cuadroNombre.text.clear()
-                binding.cuadroRaza.text.clear()
-                binding.cuadroSexo.text.clear()
-                binding.cuadroNac.text.clear()
-                binding.cuadroDNI.text.clear()
+                    binding.cuadroIdenti.text.clear()
+                    binding.cuadroNombre.text.clear()
+                    binding.cuadroRaza.text.clear()
+                    binding.cuadroSexo.text.clear()
+                    binding.cuadroNac.text.clear()
+                    binding.cuadroDNI.text.clear()
+                    binding.imagenGaler.setImageURI(null)
+                }.addOnFailureListener {
+                    val snackbar = Snackbar.make(binding.root, "Error al borrar la mascota", Snackbar.LENGTH_SHORT)
+                    snackbar.show()
+                }
             }
         }
         binding.botonConsultarTodas.setOnClickListener{
@@ -235,17 +272,14 @@ class RegistroAnimales : AppCompatActivity() {
 
             // Almacena la ruta de la imagen en la base de datos
             binding.botonAlta.setOnClickListener {
-                val db = BaseDatos(this)
-
+                /*
                 val formato = SimpleDateFormat("dd-MM-yyyy")
                 val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
                     Mascota(
-                        id = binding.cuadroIdenti.text.toString().toInt(),
                         nombre = binding.cuadroNombre.text.toString(),
                         imagen = rutaImagen, // Se asigna la ruta de la imagen
                         raza = binding.cuadroRaza.text.toString(),
                         sexo = binding.cuadroSexo.text.toString(),
-                        fechaNacimiento = it,
                         dni = binding.cuadroDNI.text.toString()
                     )
                 }
@@ -261,7 +295,7 @@ class RegistroAnimales : AppCompatActivity() {
                 binding.cuadroSexo.text.clear()
                 binding.cuadroNac.text.clear()
                 binding.cuadroDNI.text.clear()
-                binding.imagenGaler.setImageURI(null) // Limpiar el ImageView
+                binding.imagenGaler.setImageURI(null) // Limpiar el ImageView*/
 
             }
         }
