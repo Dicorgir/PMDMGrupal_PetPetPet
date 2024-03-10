@@ -1,15 +1,20 @@
 package com.example.petpetpet
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petpetpet.adapter.AdaptadorMascota
 import com.example.petpetpet.databinding.ListaActivityBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class Lista : AppCompatActivity() {
@@ -37,23 +42,28 @@ class Lista : AppCompatActivity() {
     }
 
 
-    private fun initRecyclerView() {
-        databaseMascotas.child("Mascotas").get().addOnSuccessListener {
-            if (it.exists()) {
-                val mascotas = mutableListOf<Mascota>()
-                for (snapshot in it.children) {
-                    val nombreMascota = snapshot.key.toString()
-                    val imagen = snapshot.child("imagen").value.toString()
-                    val raza = snapshot.child("raza").value.toString()
-                    val sexo = snapshot.child("sexo").value.toString()
-                    val fechaNacimiento = snapshot.child("fechaNacimiento").value.toString()
-                    val dni = snapshot.child("dni").value.toString()
-                    val mascota = Mascota(nombreMascota,imagen, raza, sexo, fechaNacimiento, dni)
-                    mascotas.add(mascota)
+
+private fun initRecyclerView() {
+    val database = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app")
+    val reference = database.getReference("Mascotas")
+    val mascotaList = mutableListOf<Mascota>()
+
+    reference.addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for (mascotaSnapshot in dataSnapshot.children) {
+                val mascota = mascotaSnapshot.getValue(Mascota::class.java)
+                if (mascota != null) {
+                    mascotaList.add(mascota)
                 }
-                binding.MascotasRecycler.layoutManager = LinearLayoutManager(this)
-                binding.MascotasRecycler.adapter = AdaptadorMascota(mascotas)
             }
+            binding.MascotasRecycler.layoutManager = LinearLayoutManager(this@Lista)
+            binding.MascotasRecycler.adapter = AdaptadorMascota(mascotaList)
         }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.w(TAG, "Error reading Mascotas", databaseError.toException())
+        }
+    })
     }
+
 }
