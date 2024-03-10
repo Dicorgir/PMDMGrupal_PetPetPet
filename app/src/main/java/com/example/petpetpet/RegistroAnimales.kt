@@ -5,19 +5,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.core.view.isVisible
 import com.example.petpetpet.databinding.PestanaRegistroBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 
-class MainActivity3 : AppCompatActivity() {
+class RegistroAnimales : AppCompatActivity() {
     private lateinit var binding: PestanaRegistroBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var rutaImagen: String = "" // Inicializa la variable con una cadena vacía
@@ -37,7 +34,16 @@ class MainActivity3 : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
         // Recuperar el nombre de usuario del SharedPreferences
-        val username = sharedPreferences.getString("username", "")
+        val username = intent.getStringExtra("username").toString()
+
+        if (intent.getStringExtra("tipo") == "usuario"){
+            binding.buttonAdministrarUsuarios.isVisible = false
+            binding.botonAlta.isVisible = false
+            binding.botonModifica.isVisible = false
+            binding.botonBorrar.isVisible = false
+            binding.botonConsulta.isVisible = false
+
+        }
 
         // Mostrar el nombre de usuario en el TextView
         binding.textoUsuario.text = "Usuario: $username"
@@ -200,12 +206,12 @@ class MainActivity3 : AppCompatActivity() {
             }
         }
         binding.botonConsultarTodas.setOnClickListener{
-            val lista = Intent(this@MainActivity3, Lista::class.java)
+            val lista = Intent(this@RegistroAnimales, Lista::class.java)
             startActivity(lista)
         }
         // Botón administrar Usuarios
         binding.buttonAdministrarUsuarios.setOnClickListener {
-            val intent = Intent(this, MainActivityAdminUsuarios::class.java)
+            val intent = Intent(this, AdiminUsuarios::class.java)
             startActivity(intent)
         }
     }

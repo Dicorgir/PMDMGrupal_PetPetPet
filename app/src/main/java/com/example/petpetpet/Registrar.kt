@@ -1,16 +1,14 @@
 package com.example.petpetpet
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.petpetpet.databinding.AltaUsuarioBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class MainActivity2 : AppCompatActivity() {
+class Registrar : AppCompatActivity() {
     private lateinit var binding: AltaUsuarioBinding
 
     private var databaseUsuarios: DatabaseReference = FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
@@ -40,7 +38,7 @@ class MainActivity2 : AppCompatActivity() {
             val usuario = Usuario(nombreUsuario, nombreCompleto, contrasena, "usuario", "activo")
             databaseUsuarios.child(nombreUsuario).setValue(usuario)
 
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
     }

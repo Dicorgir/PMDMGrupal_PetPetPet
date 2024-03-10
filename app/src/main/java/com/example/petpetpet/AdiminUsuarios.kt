@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.petpetpet.databinding.PestanaAdministrarUsuariosBinding
 import com.google.firebase.database.*
 
-class MainActivityAdminUsuarios : AppCompatActivity() {
+class AdiminUsuarios : AppCompatActivity() {
     private lateinit var binding: PestanaAdministrarUsuariosBinding
     private var databaseUsuarios: DatabaseReference =
         FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app").getReference("Usuarios")
@@ -136,7 +136,7 @@ class MainActivityAdminUsuarios : AppCompatActivity() {
 
     private fun mostrarMensaje(mensaje: String) {
         Toast.makeText(
-            this@MainActivityAdminUsuarios,
+            this@AdiminUsuarios,
             mensaje,
             Toast.LENGTH_SHORT
         ).show()
