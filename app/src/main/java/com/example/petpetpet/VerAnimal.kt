@@ -59,5 +59,11 @@ class VerAnimal : AppCompatActivity() {
             registro.putExtra("tipo", intent.getStringExtra("tipo"))
             startActivity(registro)
         }
+        binding.btnVolverListado.setOnClickListener {
+            val registro = Intent(this@VerAnimal, RegistroAnimales::class.java)
+            registro.putExtra("usuario", intent.getStringExtra("usuario"))
+            registro.putExtra("tipo", intent.getStringExtra("tipo"))
+            startActivity(registro)
+        }
     }
 }
