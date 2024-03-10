@@ -11,6 +11,8 @@ class UsuariosViewHolder(view: View): RecyclerView.ViewHolder(view){
     fun render(usuario: Usuario){
         binding.nombreCompletoUsuario.text = usuario.nombreCompleto
         binding.nombreUsuario.text = usuario.nombreUsuario
-        binding.textoAdminSiONo.text = if (usuario.isAdmin) "Sí" else "No"
+        binding.adminousuario.text = usuario.tipo
+        binding.estado.text = usuario.estado
+
     }
 }
