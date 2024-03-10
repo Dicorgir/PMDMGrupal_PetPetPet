@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="21dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/verdeClaro">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -41,8 +42,9 @@
             android:id="@+id/adminousuario"
             android:layout_width="0dp"
             android:layout_height="13dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="25dp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/nombreUsuario"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,10 +52,33 @@
             android:id="@+id/estado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="14dp"
             android:layout_marginTop="8dp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/nombreUsuario"
             app:layout_constraintTop_toBottomOf="@+id/adminousuario" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/nombreCompleto"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/nombreCompletoUsuario"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/nombreUsuario"
+            android:textStyle="normal|bold"
+            app:layout_constraintBottom_toTopOf="@+id/nombreUsuario"
+            app:layout_constraintStart_toEndOf="@+id/textView12" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="21dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/verdeClaro">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,11 +49,12 @@
 
         <Button
             android:id="@+id/btnVerAnimal"
-            android:layout_width="47dp"
+            android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="313dp"
             android:text="@string/verAnimal"
             android:textSize="24dp"
+            android:background="@drawable/button_rounded"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

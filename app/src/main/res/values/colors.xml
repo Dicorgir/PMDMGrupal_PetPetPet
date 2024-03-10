@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="darkGreen">#FF006633</color>
+    <color name="verdeClaro">#FF65ffb3</color>
     <color name="terciario">#FF56BA2C</color>
     <color name="colorVerderFondo">#FFd2ffe9</color>
 </resources>
