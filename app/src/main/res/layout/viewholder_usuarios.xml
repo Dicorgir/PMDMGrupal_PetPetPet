@@ -15,8 +15,8 @@
 
         <TextView
             android:id="@+id/nombreCompletoUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="27dp"
+            android:layout_width="162dp"
+            android:layout_height="32dp"
             android:layout_marginTop="45dp"
             android:layout_marginBottom="45dp"
             android:textColor="@color/black"
@@ -29,8 +29,8 @@
 
         <TextView
             android:id="@+id/nombreUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:text="NombreUsuario"
             app:layout_constraintBottom_toBottomOf="parent"
