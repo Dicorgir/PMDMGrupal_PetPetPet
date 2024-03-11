@@ -14,35 +14,40 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.Locale
-
+// Clase RegistroAnimales
 class RegistroAnimales : AppCompatActivity() {
+    // Atributos de la clase
     private lateinit var binding: PestanaRegistroBinding
+    // Inicialización de las variables
     private lateinit var sharedPreferences: SharedPreferences
+    // Inicialización de las variables
     private var rutaImagen: String =
         "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/65761296352685.5eac4787a4720.jpg" // Inicializa la variable con una cadena vacía
+    // Inicialización de las variables
     private var databaseUsuarios: DatabaseReference =
         FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app")
             .getReference("Usuarios")
+    // Inicialización de las variables
     private var databaseMascotas: DatabaseReference =
         FirebaseDatabase.getInstance("https://petpetpet-2460d-default-rtdb.europe-west1.firebasedatabase.app")
             .getReference("Mascotas")
-
     companion object {
         private const val CODIGO_SELECCION_IMAGEN = 100
     }
-
+    // Método onCreate
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inicializar el binding
         binding = PestanaRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // Inicializar el SharedPreferences
         sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
 
         // Recuperar el nombre de usuario del SharedPreferences
         val username = intent.getStringExtra("usuario").toString()
         val tipo = intent.getStringExtra("tipo").toString()
-
+        // Verificar si el tipo de usuario es "admin"
         if (tipo == "usuario") {
             binding.buttonAdministrarUsuarios.isVisible = false
             binding.botonAlta.isVisible = false
@@ -89,6 +94,7 @@ class RegistroAnimales : AppCompatActivity() {
                     "Por favor, completa todos los campos",
                     Snackbar.LENGTH_SHORT
                 ).show()
+                // Verifica si la ruta de la imagen está vacía
             } else {
                 val formato = SimpleDateFormat("dd-MM-yyyy")
                 val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
@@ -101,7 +107,7 @@ class RegistroAnimales : AppCompatActivity() {
                         "dálmata" -> "https://bowwowinsurance.com.au/wp-content/uploads/2018/10/dalmatian-700x700.jpg"
                         else -> rutaImagen
                     }
-
+                    // Crear un objeto Mascota con los datos ingresados
                     Mascota(
                         id = binding.cuadroIdenti.text.toString().toInt(),
                         nombre = nombre,
@@ -112,7 +118,7 @@ class RegistroAnimales : AppCompatActivity() {
                         dni = binding.cuadroDNI.text.toString()
                     )
                 }
-
+                // Insertar la mascota en la base de datos
                 if (mascota != null) {
                     databaseMascotas.child(mascota.id.toString()).setValue(mascota)
                         .addOnSuccessListener {
@@ -132,7 +138,7 @@ class RegistroAnimales : AppCompatActivity() {
                         }
 
                 }
-
+                // Limpiar los campos y el ImageView
                 binding.cuadroIdenti.text.clear()
                 binding.cuadroNombre.text.clear()
                 binding.cuadroRaza.text.clear()
@@ -142,7 +148,7 @@ class RegistroAnimales : AppCompatActivity() {
                 binding.imagenGaler.setImageURI(null)
             }
         }
-
+        // Agregar listener al botón "elegir imagen
         binding.botonModifica.setOnClickListener {
 
             // Verifica si alguno de los campos está vacío
@@ -159,6 +165,7 @@ class RegistroAnimales : AppCompatActivity() {
                     "Por favor, completa todos los campos",
                     Snackbar.LENGTH_SHORT
                 ).show()
+                // Verifica si la ruta de la imagen está vacía
             } else {
                 val formato = SimpleDateFormat("dd-MM-yyyy")
                 val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
@@ -171,7 +178,7 @@ class RegistroAnimales : AppCompatActivity() {
                         "dálmata" -> "https://bowwowinsurance.com.au/wp-content/uploads/2018/10/dalmatian-700x700.jpg"
                         else -> rutaImagen
                     }
-
+                    // Crear un objeto Mascota con los datos ingresados
                     Mascota(
                         id = binding.cuadroIdenti.text.toString().toInt(),
                         nombre = nombre,
@@ -182,7 +189,7 @@ class RegistroAnimales : AppCompatActivity() {
                         dni = binding.cuadroDNI.text.toString()
                     )
                 }
-
+                // Insertar la mascota en la base de datos
                 if (mascota != null) {
                     databaseMascotas.child(mascota.id.toString()).setValue(mascota)
                         .addOnSuccessListener {
@@ -202,7 +209,7 @@ class RegistroAnimales : AppCompatActivity() {
                         }
 
                 }
-
+                // Limpiar los campos y el ImageView
                 binding.cuadroIdenti.text.clear()
                 binding.cuadroNombre.text.clear()
                 binding.cuadroRaza.text.clear()
@@ -212,26 +219,30 @@ class RegistroAnimales : AppCompatActivity() {
                 binding.imagenGaler.setImageURI(null)
             }
         }
+        // Agregar listener al botón "elegir imagen
         binding.botonConsulta.setOnClickListener {
+            // Verifica si el campo de ID está vacío
             val idText = binding.cuadroIdenti.text.toString()
-
+            // Verifica si el campo de ID está vacío
             if (idText.isNotEmpty()) {
                 val id = idText.toInt()
-
+                // Consultar la mascota en Firebase
                 databaseMascotas.child(id.toString()).get().addOnSuccessListener { dataSnapshot ->
                     val mascota = dataSnapshot.getValue(Mascota::class.java)
-
+                    // Verifica si la mascota no es nula
                     if (mascota != null) {
                         binding.cuadroNombre.setText(mascota.nombre)
                         binding.cuadroRaza.setText(mascota.raza)
                         binding.cuadroSexo.setText(mascota.sexo)
                         binding.cuadroNac.setText(SimpleDateFormat("dd-MM-yyyy").format(mascota.fechaNacimiento))
                         binding.cuadroDNI.setText(mascota.dni)
+                        // Mostrar la imagen de la mascota en el ImageView
                         Snackbar.make(
                             binding.root,
                             "Operación consulta realizada",
                             Snackbar.LENGTH_SHORT
                         ).show()
+                        // Mostrar la imagen de la mascota en el ImageView
                     } else {
                         // Mostrar Snackbar indicando que no hay mascota disponible con ese ID
                         Snackbar.make(
@@ -290,7 +301,7 @@ class RegistroAnimales : AppCompatActivity() {
                             Snackbar.LENGTH_LONG
                         )
                     snackbar.show()
-
+                    // Limpiar los campos
                     binding.cuadroIdenti.text.clear()
                     binding.cuadroNombre.text.clear()
                     binding.cuadroRaza.text.clear()
@@ -308,6 +319,7 @@ class RegistroAnimales : AppCompatActivity() {
                 }
             }
         }
+        // Botón de elegir imagen
         binding.botonConsultarTodas.setOnClickListener {
             val lista = Intent(this@RegistroAnimales, Lista::class.java)
             lista.putExtra("usuario", username)
@@ -323,10 +335,10 @@ class RegistroAnimales : AppCompatActivity() {
         }
     }
 
-
+    // Método para elegir una imagen de la galería
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        // Verifica si el código de solicitud es el mismo que el código de selección de imagen
         if (requestCode == CODIGO_SELECCION_IMAGEN && resultCode == Activity.RESULT_OK && data != null) {
             // Aquí puedes manejar la imagen seleccionada
             val imagenSeleccionada = data.data
@@ -341,6 +353,7 @@ class RegistroAnimales : AppCompatActivity() {
                 val formato = SimpleDateFormat("dd-MM-yyyy")
                 val mascota = formato.parse(binding.cuadroNac.text.toString())?.let {
                     Mascota(
+                        // Crear un objeto Mascota con los datos ingresados
                         id = binding.cuadroIdenti.text.toString().toInt(),
                         nombre = binding.cuadroNombre.text.toString(),
                         imagen = rutaImagen, // Se asigna la ruta de la imagen
@@ -356,7 +369,7 @@ class RegistroAnimales : AppCompatActivity() {
                         Snackbar.make(binding.root, "Mascota insertada", Snackbar.LENGTH_SHORT)
                     snackbar.show()
                 }
-
+                // Limpiar los campos y el ImageView
                 binding.cuadroIdenti.text.clear()
                 binding.cuadroNombre.text.clear()
                 binding.cuadroRaza.text.clear()
@@ -368,7 +381,7 @@ class RegistroAnimales : AppCompatActivity() {
             }
         }
     }
-
+    // Método para evitar que el usuario retroceda
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         // No hacemos nada para evitar que el usuario retroceda
